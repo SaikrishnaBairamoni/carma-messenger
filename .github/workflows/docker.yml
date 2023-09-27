@@ -15,7 +15,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v3
         with:
-          context: GITHUB_WORKSPACE/carma-messenger-config/chevrolet_tahoe_2018/Dockerfile
+          context: carma-messenger-config/chevrolet_tahoe_2018/
          
   development:
     runs-on: ubuntu-latest
@@ -27,7 +27,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v3
         with:
-          context: GITHUB_WORKSPACE/carma-messenger-config/development/Dockerfile
+          context: carma-messenger-config/development/
   carma-messenger-ui:
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +38,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v3
         with:
-          context: GITHUB_WORKSPACE/carma-messenger-ui/Dockerfile                 
+          context: carma-messenger-ui/             
   carma-messenger-core:
     runs-on: ubuntu-latest
     steps:
@@ -49,4 +49,4 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v3
         with:
-          context: GITHUB_WORKSPACE/carma-messenger-core/Dockerfile         
+          context: carma-messenger-core/  
