@@ -2,30 +2,26 @@ name: Docker
 
 on:
   push:
+    branches-ignore:
+      - "develop"
 
 jobs:
   docker:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dockerfile: [Dockerfile, Dockerfile, Dockerfile]  # Specify 'Dockerfile' for each subdirectory
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Find all Dockerfiles in the repository
-      - name: Find Dockerfiles
-        id: find-dockerfiles
-        run: |
-          echo "::set-output name=dockerfiles::$(find . -type f -name 'Dockerfile')"
-          
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Loop through each Dockerfile and build the corresponding image
-      - name: Build Docker Images
+      - name: Build Docker Image
         run: |
-          IFS=$'\n' # Set delimiter to newline
-          for dockerfile in ${{ steps.find-dockerfiles.outputs.dockerfiles }}; do
-            directory=$(dirname "$dockerfile")
-            image_name="carma-messenger:$(basename $directory)"
-            echo "Building $image_name from $dockerfile"
-            docker build -t $image_name -f $dockerfile $directory
-          done
+          directory=$(dirname "${{ matrix.dockerfile }}")
+          image_name="your-image-name:$(basename $directory)"
+          echo "Building $image_name from ${{ matrix.dockerfile }}"
+          docker build -t $image_name -f ${{ matrix.dockerfile }} $directory
