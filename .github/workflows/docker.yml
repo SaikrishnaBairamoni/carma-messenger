@@ -4,28 +4,47 @@ on:
   push:
 
 jobs:
-  docker:
+  chevrolet_tahoe_2018:
     runs-on: ubuntu-latest
-
-    # Define the matrix of Dockerfile names and their respective directories
-    strategy:
-      matrix:
-        dockerfile: [Dockerfile, Dockerfile, Dockerfile, Dockerfile]  
-        dockerfile_directory: [$GITHUB_WORKSPACE/carma-messenger-config/chevrolet_tahoe_2018/, $GITHUB_WORKSPACE/carma-messenger-config/development/, $GITHUB_WORKSPACE/carma-messenger-core/, $GITHUB_WORKSPACE/carma-messenger-ui/]  # Add the corresponding directory for each Dockerfile
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
-      - name: Build and Push Docker Image
-        run: |
-          dockerfile="${{ matrix.dockerfile }}"
-          directory="${{ matrix.dockerfile_directory }}"
-          image_name="carma-messenger/$(basename $directory):latest"  
-          echo "Building $image_name from $dockerfile in $directory"
-          docker build -t $image_name -f "$dockerfile" "$directory"
-          echo "Pushing $image_name"
-          docker push $image_name
+      - name: Build
+        uses: docker/build-push-action@v3
+        with:
+          context: carma-messenger-config/chevrolet_tahoe_2018/Dockerfile
+  development:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build
+        uses: docker/build-push-action@v3
+        with:
+          context: carma-messenger-config/development/Dockerfile
+  carma-messenger-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build
+        uses: docker/build-push-action@v3
+        with:
+          context: carma-messenger-ui/Dockerfile                 
+  carma-messenger-core:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build
+        uses: docker/build-push-action@v3
+        with:
+          context: carma-messenger-core/Dockerfile         
