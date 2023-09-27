@@ -36,9 +36,9 @@ jobs:
           elif [ "${{ matrix.service }}" == "chevrolet_tahoe_2018" ]; then
             tag="usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-chevrolet_tahoe_2018"
           fi
-       - name: Build and Push Docker Image
-         uses: docker/build-push-action@v3
-         with:
-           context: ${{ matrix.service }}
-           push: true
-           tags: ${{ tag }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          context: ${{ matrix.service }}
+          push: true
+          tags: ${{ tag }}
