@@ -34,20 +34,20 @@ jobs:
       - name: development
         uses: docker/build-push-action@v3
         with:
-          context: carma-messenger-config/${{ matrix.service }}/development
+          context: carma-messenger-config/${{ matrix.service }}/
           push: true
           tags: usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-development
 
       - name: carma-messenger-ui
         uses: docker/build-push-action@v3
         with:
-          context: carma-messenger-config/${{ matrix.service }}/
+          context: carma-messenger-ui/${{ matrix.service }}/
           push: true
           tags: usdotfhwastoldev/carma-messenger-ui:${{ github.ref_name }}-carma-messenger-ui
 
       - name: carma-messenger-core
         uses: docker/build-push-action@v3
         with:
-          context: carma-messenger-config/${{ matrix.service }}/
+          context: carma-messenger-core/${{ matrix.service }}/
           push: true
           tags: usdotfhwastoldev/carma-messenger-core:${{ github.ref_name }}-carma-messenger-core
