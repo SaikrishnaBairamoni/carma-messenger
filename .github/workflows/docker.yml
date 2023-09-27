@@ -29,4 +29,4 @@ jobs:
         with:
           context: carma-messenger-config/${{ matrix.service }}/
           push: true
-          tags: usdotfhwastoldev/${{ github.event.repository.name }}:${{ github.ref_name }}
+          tags: usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-chevrolet_tahoe_2018
