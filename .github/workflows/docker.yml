@@ -3,15 +3,15 @@ name: Docker
 on:
   push:
 
-
 jobs:
   docker:
     runs-on: ubuntu-latest
 
-    # Define the matrix of Dockerfile names
+    # Define the matrix of Dockerfile names and their respective directories
     strategy:
       matrix:
-        dockerfile: [Dockerfile, Dockerfile, Dockerfile]  # Add your Dockerfile names here
+        dockerfile: [Dockerfile, Dockerfile, Dockerfile, Dockerfile]  
+        dockerfile_directory: [carma-messenger-config/chevrolet_tahoe_2018/, carma-messenger-config/development/, carma-messenger-core/, carma-messenger-ui/]  # Add the corresponding directory for each Dockerfile
 
     steps:
       - name: Checkout
@@ -22,10 +22,10 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          directory=$(dirname "${{ matrix.dockerfile }}")
           dockerfile="${{ matrix.dockerfile }}"
-          image_name="carma-messenger:$(basename $directory)"
+          directory="${{ matrix.dockerfile_directory }}"
+          image_name="carma-messenger/$(basename $directory):latest"  # Set your desired image name here
           echo "Building $image_name from $dockerfile in $directory"
-          docker build -t $image_name -f "$directory/$dockerfile" "$directory"
+          docker build -t $image_name -f "$dockerfile" "$directory"
           echo "Pushing $image_name"
           docker push $image_name
