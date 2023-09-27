@@ -20,6 +20,6 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: $GITHUB_WORKSPACE
           file: ${{ matrix.dockerfile }}
           
