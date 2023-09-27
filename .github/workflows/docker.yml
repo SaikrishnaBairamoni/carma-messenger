@@ -2,12 +2,15 @@ name: Docker
 
 on:
   push:
+
 jobs:
   docker:
     runs-on: ubuntu-latest
+
+    # Define the matrix of Dockerfile names
     strategy:
       matrix:
-        dockerfile: [Dockerfile, Dockerfile, Dockerfile]  # Specify 'Dockerfile' for each subdirectory
+        dockerfile: [Dockerfile, Dockerfile, Dockerfile]  
 
     steps:
       - name: Checkout
@@ -16,11 +19,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker Image
+      - name: Build and Push Docker Image
         run: |
           directory=$(dirname "${{ matrix.dockerfile }}")
           dockerfile="${{ matrix.dockerfile }}"
-          image_name="carma-messenger"  # Set your desired image name here
+          image_name="carma-messenger:$(basename $directory)"
           echo "Building $image_name from $dockerfile in $directory"
-          docker build -t $image_name -f "$GITHUB_WORKSPACE/$directory/$dockerfile" "$GITHUB_WORKSPACE/$directory"
-          docker tag $image_name "${image_name}:$(basename $directory)"
+          docker build -t $image_name -f "$directory/$dockerfile" "$directory"
+          echo "Pushing $image_name"
+          docker push $image_name
