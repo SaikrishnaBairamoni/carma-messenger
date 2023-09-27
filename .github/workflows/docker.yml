@@ -11,11 +11,12 @@ jobs:
         uses: actions/checkout@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - run: ls -la && pwd     
       - name: Build
         uses: docker/build-push-action@v3
         with:
           context: GITHUB_WORKSPACE/carma-messenger-config/chevrolet_tahoe_2018/Dockerfile
-      - run: ls -la && pwd    
+         
   development:
     runs-on: ubuntu-latest
     steps:
