@@ -24,19 +24,29 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and Push Docker Image
+          
+      - name: Build and Push carma-messenger-ui Docker Image
         run: |
-          if [ "${{ matrix.service }}" == "carma-messenger-core" ]; then
-            docker build -t usdotfhwastoldev/carma-messenger-core:${{ github.ref_name }}-carma-messenger-core -f carma-messenger-core/Dockerfile .
-            docker push usdotfhwastoldev/carma-messenger-core:${{ github.ref_name }}-carma-messenger-core
-          elif [ "${{ matrix.service }}" == "carma-messenger-ui" ]; then
-            docker build -t usdotfhwastoldev/carma-messenger-ui:${{ github.ref_name }}-carma-messenger-ui -f carma-messenger-ui/Dockerfile .
-            docker push usdotfhwastoldev/carma-messenger-ui:${{ github.ref_name }}-carma-messenger-ui
-          elif [ "${{ matrix.service }}" == "development" ]; then
-            docker build -t usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-development -f carma-messenger-config/development/Dockerfile .
-            docker push usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-development
-          elif [ "${{ matrix.service }}" == "chevrolet_tahoe_2018" ]; then
-            docker build -t usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-chevrolet_tahoe_2018 -f carma-messenger-config/chevrolet_tahoe_2018/Dockerfile .
-            docker push usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-chevrolet_tahoe_2018
-          fi
+          docker build -t usdotfhwastoldev/carma-messenger-ui:${{ github.ref_name }}-carma-messenger-ui -f carma-messenger-ui/Dockerfile .
+          docker push usdotfhwastoldev/carma-messenger-ui:${{ github.ref_name }}-carma-messenger-ui
+        working-directory: ./carma-messenger-ui
+
+      - name: Build and Push carma-messenger-core Docker Image
+        run: |
+          docker build -t usdotfhwastoldev/carma-messenger-core:${{ github.ref_name }}-carma-messenger-core -f carma-messenger-core/Dockerfile .
+          docker push usdotfhwastoldev/carma-messenger-core:${{ github.ref_name }}-carma-messenger-core
+        working-directory: ./carma-messenger-core
+      - name: Build and Push chevrolet_tahoe_2018 Docker Image
+        run: |
+          docker build -t usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-chevrolet_tahoe_2018 -f carma-messenger-config/chevrolet_tahoe_2018/Dockerfile .
+          docker push usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-chevrolet_tahoe_2018  
+        working-directory: ./carma-messenger-config/chevrolet_tahoe_2018
+
+      - name: Build and Push development Docker Image
+        run: |
+          docker build -t usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-development -f carma-messenger-config/development/Dockerfile .
+          docker push usdotfhwastoldev/carma-messenger-config:${{ github.ref_name }}-development
+        working-directory: ./carma-messenger-config/development
+
+      
+
